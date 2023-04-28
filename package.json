@@ -15,17 +15,22 @@
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "cd node_modules/mqtt && npm install . && webpack mqtt.js --output-library mqtt"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.3",
+    "mqtt": "^4.3.7",
     "radix": "^0.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-toastify": "^9.1.2"
   },
   "devDependencies": {
+    "@types/node": "^18.16.2",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@types/ws": "^8.5.4",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "@vitejs/plugin-react": "^3.1.0",
