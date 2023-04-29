@@ -22,8 +22,8 @@ export default function Home() {
           <ConnectionForm
             onConnect={(client) => {
               setClient(client);
-              client.on('message', (topic, message, packet) => {
-                setMessages((prev) => [...prev, { topic, message: message.toString(), qos: 0 }]);
+              client.on('message', (topic, message, { qos }) => {
+                setMessages((prev) => [...prev, { topic, message: message.toString(), qos }]);
               });
             }}
           />
