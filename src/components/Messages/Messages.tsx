@@ -1,21 +1,8 @@
 import { MqttClient } from 'mqtt/dist/mqtt';
-import { useEffect, useState } from 'react';
 import PublishMessageForm from './PublishMessageForm';
+import { Message } from '../../Home';
 
-export type Message = {
-  topic: string;
-  message: string;
-  qos: number;
-};
-
-export default function Messages({ client }: { client: MqttClient }) {
-  const [messages, setMessages] = useState<Message[]>([]);
-  useEffect(() => {
-    client.on('message', (topic, message, packet) => {
-      setMessages((prev) => [...prev, { topic, message: message.toString(), qos: 0 }]);
-    });
-  }, [client]);
-
+export default function Messages({ client, messages }: { client: MqttClient; messages: Message[] }) {
   return (
     <div className="ml-8 w-96">
       <h2 className="text-2xl font-semibold flex-1">Messages</h2>
