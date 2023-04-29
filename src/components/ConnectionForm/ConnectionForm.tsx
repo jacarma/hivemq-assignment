@@ -3,20 +3,21 @@ import { toast } from 'react-toastify';
 import { connect } from '../../mqtt/hivemq';
 import Button from '../Button';
 import TextInput from '../TextInput';
+import { MqttClient } from 'mqtt/dist/mqtt';
 
-export default function ConnectionForm({ onConnect }: { onConnect: () => void }) {
+export default function ConnectionForm({ onConnect }: { onConnect: (client: MqttClient) => void }) {
   const [host, setHost] = useState(import.meta.env.VITE_HOSTNAME);
   const [userName, setUserName] = useState(import.meta.env.VITE_USERNAME);
   const [password, setPassword] = useState(import.meta.env.VITE_PASSWORD);
   const [connected, setConnected] = useState(false);
 
-  const cnx = () => {
-    const cnx = connect(host, userName, password);
-    cnx.on('connect', (e) => {
+  const handleConnect = () => {
+    const client = connect(host, userName, password);
+    client.on('connect', () => {
       setConnected(true);
-      onConnect(cnx);
+      onConnect(client);
     });
-    cnx.on('error', (e) => toast.error(e.message));
+    client.on('error', (e) => toast.error(e.message));
   };
 
   return (
@@ -51,9 +52,7 @@ export default function ConnectionForm({ onConnect }: { onConnect: () => void })
           onChange={setPassword}
           disabled={connected}
         />
-        <div className="mt-4 col-span-2 text-right">
-          <Button label="Connect" onClick={cnx} disabled={connected} />
-        </div>
+        <Button label="Connect" onClick={handleConnect} disabled={connected} />
       </form>
     </>
   );
