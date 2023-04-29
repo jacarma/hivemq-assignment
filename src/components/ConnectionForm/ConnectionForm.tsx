@@ -17,7 +17,18 @@ export default function ConnectionForm({ onConnect }: { onConnect: (client: Mqtt
       setConnected(true);
       onConnect(client);
     });
-    client.on('error', (e) => toast.error(e.message));
+    client.on('error', (e) => {
+      setConnected(false);
+      toast.error(e.message);
+    });
+    client.on('disconnect', () => {
+      setConnected(false);
+      toast.error('Disconnected');
+    });
+    client.on('end', () => {
+      setConnected(false);
+      toast.error('Connection ended');
+    });
   };
 
   return (
